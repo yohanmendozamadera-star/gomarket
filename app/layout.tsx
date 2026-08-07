@@ -5,6 +5,7 @@ import "./modules.css";
 import "./categories.css";
 import "./provider-access.css";
 import "./product-catalog.css";
+import "./storefront-catalog.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
