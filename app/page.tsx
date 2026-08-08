@@ -68,8 +68,8 @@ function StoreV2({cart,add,onCheckout}:{cart:CartItem[];add:(p:CatalogProduct)=>
 }
 
 function measuredQuantity(unitMeasure="unidad",unitQuantity=1,qty=1){const total=Number(unitQuantity)*qty,plural=total===1?unitMeasure:unitMeasure==="unidad"?"unidades":`${unitMeasure}s`;return `${Number.isInteger(total)?total:Number(total.toFixed(3))} ${plural}`}
-function elapsedHours(order:Order){const end=order.delivered_at?new Date(order.delivered_at).getTime():Date.now();return Math.max(0,(end-new Date(order.created_at).getTime())/3600000)}
-function hoursLabel(order:Order){const hours=elapsedHours(order);return `${hours<10?hours.toFixed(1):Math.round(hours)} h${order.delivered_at?" para entregar":" transcurridas"}`}
+function elapsedMinutes(order:Order){const end=order.delivered_at?new Date(order.delivered_at).getTime():Date.now();return Math.max(0,Math.floor((end-new Date(order.created_at).getTime())/60000))}
+function hoursLabel(order:Order){const total=elapsedMinutes(order),hours=Math.floor(total/60),minutes=total%60,duration=hours?`${hours} h${minutes?` ${minutes} min`:""}`:`${minutes} min`;return order.delivered_at?`Entregado en ${duration}`:`${duration} transcurridos`}
 function pricePresentation(p:CatalogProduct){const unit=p.unit_measure||"unidad",amount=Number(p.unit_quantity||1);return amount===1?`Precio por ${unit}`:`Presentación de ${measuredQuantity(unit,amount,1)}`}
 
 function StoreV3({cart,add,qty,onCheckout}:{cart:CartItem[];add:(p:CatalogProduct)=>void;qty:(id:string|number,n:number)=>void;onCheckout:()=>void}){
