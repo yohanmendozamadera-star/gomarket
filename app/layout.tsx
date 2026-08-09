@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./modules.css";
 import "./categories.css";
@@ -7,10 +6,9 @@ import "./provider-access.css";
 import "./product-catalog.css";
 import "./storefront-catalog.css";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "GoMarket · Todo lo bueno, más cerca de ti",
   description: "El marketplace local que conecta compradores con los mejores comercios de su ciudad.",
   icons: { icon: "/favicon.svg" },
@@ -23,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es"><body className={`${geist.variable} ${geistMono.variable}`}>{children}</body></html>;
+  return <html lang="es"><body>{children}</body></html>;
 }
