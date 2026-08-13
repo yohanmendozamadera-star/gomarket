@@ -5,6 +5,7 @@ import "./categories.css";
 import "./provider-access.css";
 import "./product-catalog.css";
 import "./storefront-catalog.css";
+import "./role-platform.css";
 
 
 export const metadata: Metadata = {
