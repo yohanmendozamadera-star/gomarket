@@ -3,7 +3,10 @@ alter table public.organizations add column if not exists slug text;
 create unique index if not exists organizations_slug_unique on public.organizations(lower(slug)) where slug is not null;
 
 update public.organizations
-set slug = trim(both '-' from regexp_replace(lower(unaccent(name)), '[^a-z0-9]+', '-', 'g')) || '-' || left(id::text, 6)
+set slug = trim(both '-' from regexp_replace(
+  translate(lower(name), 'áéíóúüñàèìòù', 'aeiouunaeiou'),
+  '[^a-z0-9]+', '-', 'g'
+)) || '-' || left(id::text, 6)
 where slug is null;
 
 create table if not exists public.credit_sales (
