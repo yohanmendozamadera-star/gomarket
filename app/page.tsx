@@ -33,7 +33,7 @@ export default function GoMarket(){
 
  useEffect(()=>{void init();const {data}=supabase.auth.onAuthStateChange(()=>void init());return()=>data.subscription.unsubscribe()},[]);
  async function init(){const {data:{user}}=await supabase.auth.getUser();if(!user){setProfile(null);setOrgs([]);return}const {data:p}=await supabase.from("profiles").select("id,email,full_name,platform_role").eq("id",user.id).single();setProfile(p);const {data:o}=await supabase.from("organizations").select("id,name,status").order("created_at");setOrgs(o||[])}
- const login=()=>supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.href}});
+ const login=()=>supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.origin}});
  const logout=async()=>{await supabase.auth.signOut();setView("store")};
  const add=(p:CatalogProduct,amount=1)=>setCart(c=>{if(c.length&&c[0].organization_id&&p.organization_id!==c[0].organization_id){setNotice("Por ahora cada pedido debe contener productos de un solo proveedor.");return c}const hit=c.find(x=>x.id===p.id);return hit?c.map(x=>x.id===p.id?{...x,qty:Number((x.qty+amount).toFixed(2))}:x):[...c,{id:p.id,name:p.name,price:Number(p.price),qty:amount,emoji:p.emoji||"📦",organization_id:p.organization_id,image_url:p.image_url,presentation:productPresentation(p),unit_measure:p.unit_measure||"unidad",unit_quantity:Number(p.unit_quantity||1)}]});
  const qty=(id:string|number,n:number)=>setCart(c=>c.map(x=>x.id===id?{...x,qty:n}:x).filter(x=>x.qty>0));
