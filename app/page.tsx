@@ -44,7 +44,7 @@ export default function GoMarket(){
  const qty=(id:string|number,n:number)=>setCart(c=>c.map(x=>x.id===id?{...x,qty:n}:x).filter(x=>x.qty>0));
  useEffect(()=>{const rows=Array.from(document.querySelectorAll<HTMLElement>(".cart-row"));rows.forEach((row,index)=>{const item=cart[index],holder=row.querySelector<HTMLElement>(".stepper"),label=holder?.querySelector<HTMLElement>("b");if(!item||!holder||!label||holder.querySelector("input"))return;const input=document.createElement("input");input.type="number";input.min=String(item.unit_measure==="libra"?.25:1);input.step=String(item.unit_measure==="libra"?.25:1);input.value=String(item.qty);input.className="direct-quantity";input.setAttribute("aria-label",`Cantidad de ${item.name}`);input.addEventListener("change",()=>qty(item.id,Math.max(Number(input.min),Number(input.value)||Number(input.min))));label.style.display="none";holder.insertBefore(input,label.nextSibling)});},[cart,view]);
  async function openPanel(){
-  const {data:freshOrgs}=await supabase.from("organizations").select("id,name,status").order("created_at");
+  const {data:freshOrgs}=await supabase.from("organizations").select("id,name,status,slug,owner_user_id").order("created_at");
   const availableOrgs=(freshOrgs||[]) as Org[],org=availableOrgs[0];
   setOrgs(availableOrgs);
   if(profile?.platform_role!=="super_admin"&&!org){setNotice("Completa primero los datos de tu empresa para activar el panel del proveedor.");setView("provider");return}
